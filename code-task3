@@ -1,0 +1,62 @@
+import re
+
+def evaluate_password_strength(password):
+    # Define the criteria for a strong password
+    has_min_length = len(password) >= 8
+    has_uppercase = bool(re.search(r'[A-Z]', password))
+    has_lowercase = bool(re.search(r'[a-z]', password))
+    has_number = bool(re.search(r'\d', password))
+    has_special_char = bool(re.search(r'[!@#$%^&*(),.?":{}|<>]', password))
+
+    # Calculate the score
+    strength_score = sum([has_min_length, has_uppercase, has_lowercase, has_number, has_special_char])
+    password_strength = ""
+    feedback_list = []
+
+    if has_min_length:
+        feedback_list.append("Password has a good length.")
+    else:
+        feedback_list.append("Password should be at least 8 characters long.")
+
+    if has_uppercase:
+        feedback_list.append("Password contains uppercase letters.")
+    else:
+        feedback_list.append("Password should contain at least one uppercase letter.")
+
+    if has_lowercase:
+        feedback_list.append("Password contains lowercase letters.")
+    else:
+        feedback_list.append("Password should contain at least one lowercase letter.")
+
+    if has_number:
+        feedback_list.append("Password contains numbers.")
+    else:
+        feedback_list.append("Password should contain at least one number.")
+
+    if has_special_char:
+        feedback_list.append("Password contains special characters.")
+    else:
+        feedback_list.append("Password should contain at least one special character.")
+
+    if strength_score == 5:
+        password_strength = "Very Strong"
+    elif strength_score == 4:
+        password_strength = "Strong"
+    elif strength_score == 3:
+        password_strength = "Moderate"
+    else:
+        password_strength = "Weak"
+
+    return password_strength, feedback_list
+
+def main():
+    print("------------- Password Strength Checker --------------")
+    user_password = input("Enter a password to check its strength: ")
+    password_strength, feedback_list = evaluate_password_strength(user_password)
+    print(f"Password strength: {password_strength}")
+    print("Feedback:")
+    for feedback in feedback_list:
+        print(f"- {feedback}")
+
+if __name__ == "__main__":
+    main()
